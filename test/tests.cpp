@@ -80,6 +80,29 @@ class MockTimerClient : public TimerClient {
     MOCK_METHOD(void, Timeout, (), (override));
 };
 
+
+TEST(TimerTest, TimerCallsTimeout) {
+    MockTimerClient mockClient;
+    Timer timer;
+
+    EXPECT_CALL(mockClient, Timeout()).Times(1);
+
+    std::thread t = timer.tregister(1, &mockClient);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    t.join();
+}
+
+
+TEST(DoorTimerAdapterTest, TimeoutDoesNothingWhenClosed) {
+    TimedDoor door(1);
+    DoorTimerAdapter adapter(door);
+
+    door.lock();
+
+    EXPECT_NO_THROW(adapter.Timeout());
+}
+
+
 TEST(TimedDoorCreationTest, NewDoorIsClosed) {
     TimedDoor door(5);
     EXPECT_FALSE(door.isDoorOpened());

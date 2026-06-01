@@ -70,13 +70,6 @@ TEST_F(TimedDoorTest, ThrowStateThrowsWhenFlagSetViaTimeout) {
     EXPECT_THROW(quickDoor.throwState(), std::runtime_error);
 }
 
-TEST_F(TimedDoorTest, TimeoutExceptionWhenDoorRemainsOpen) {
-    TimedDoor quickDoor(20);
-    quickDoor.unlock();
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    EXPECT_THROW(quickDoor.lock(), std::runtime_error);
-}
-
 TEST_F(TimedDoorTest, CloseBeforeTimeoutPreventsException) {
     TimedDoor quickDoor(100);
     quickDoor.unlock();

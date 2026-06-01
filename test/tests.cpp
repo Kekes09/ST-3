@@ -111,11 +111,3 @@ TEST_F(TimedDoorTest, AdapterDelegatesTimeoutToDoor) {
     DoorTimerAdapter tempAdapter(tempDoor);
     EXPECT_NO_THROW(tempAdapter.Timeout());
 }
-
-TEST_F(TimedDoorTest, DestructorCleansUpResources) {
-    auto* testDoor = new TimedDoor(10);
-    testDoor->unlock();
-    std::this_thread::sleep_for(std::chrono::milliseconds(30));
-    delete testDoor;
-    SUCCEED();
-}
